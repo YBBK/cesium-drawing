@@ -1,0 +1,70 @@
+/* color palette from <https://github.com/vuejs/theme> */
+:root {
+  --border-radius: 4px;
+  --border-color: #f0f0f0;
+  --component-background-color: #fff;
+  --component-bg-color: #ffffff80;
+  --text-color: rgba(0 0 0 / 85%);
+  --main-color-dark: #1677ff;
+  --hover-bg-color: #0000000d;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --border-color: #303030;
+    --component-background-color: #141414;
+    --component-bg-color: #1f1f1f80;
+    --text-color: #c9d1d9;
+    --hover-bg-color: #f4f7f90d;
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  font-weight: normal;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.fade-transition {
+  &-enter-active,
+  &-leave-active {
+    transition: opacity 2.2s ease-in-out;
+  }
+
+  &-enter-from,
+  &-leave-to {
+    opacity: 0;
+  }
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.2s ease-in-out;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+.slide-fade-enter-active {
+  transition: all 0.3s ease-out;
+}
+
+.slide-fade-leave-active {
+  transition: all 0.3s cubic-bezier(1, 0.5, 0.8, 1);
+}
+
+.slide-fade-enter-from,
+.slide-fade-leave-to {
+  transform: translateX(300px);
+  /* opacity: 0; */
+}
