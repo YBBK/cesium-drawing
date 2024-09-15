@@ -681,7 +681,7 @@ class Drawer {
     isNotify: boolean = false
   ) {
     if (geojson.type === 'FeatureCollection') {
-      geojson.features.forEach((feature) => this.createGraphicFromFeature(feature))
+      geojson.features.forEach((feature) => this.createGraphicFromFeature(feature, isNotify))
     } else if (geojson.type === 'Feature') {
       this.createGraphicFromFeature(geojson, isNotify)
     }

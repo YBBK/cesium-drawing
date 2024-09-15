@@ -186,7 +186,8 @@ const onClose = () => {
 const importGeoJSON = async () => {
     try {
         if (geoJSON.value) {
-            drawer?.importFromGeoJSON(geoJSON.value);
+            const drawer = getDrawer();
+            drawer?.importFromGeoJSON(geoJSON.value, true);
             message.value = { msg: 'GeoJSON was imported!', success: true }
             setTimeout(() => {
                 message.value = undefined
@@ -194,7 +195,7 @@ const importGeoJSON = async () => {
         }
     } catch (err) {
         console.error('Failed to Import: ', err)
-        message.value = { msg: 'Failed to import GeoJSON!', success: true }
+        message.value = { msg: 'Failed to import GeoJSON!', success: false }
         setTimeout(() => {
             message.value = undefined
         }, 1500)
@@ -342,6 +343,8 @@ watch(() => geoJSON.value, (newValue) => {
         height: 48px;
         display: flex;
         min-width: 150px;
+
+        color: var(--text-color);
 
         &::before {
             content: '';

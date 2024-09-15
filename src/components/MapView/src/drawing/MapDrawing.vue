@@ -39,7 +39,7 @@ const props = defineProps({
 
 const graphicListener = {
     async onGraphicAdded(graphic: DrawableGraphic) {
-        //        console.log(`Graphic added: ${graphic.id}`, graphic.type());
+        console.log(`Graphic added: ${graphic.id}`, graphic.type());
         currentType.value = undefined;
         store.addShape(graphic.type(), graphic.toGeoJSON())
     },
