@@ -19,7 +19,7 @@
             </div>
             <div class="section">
                 <p>
-                    <label>Github: </label><a _target="blank" :href="url_github">{{ url_github }}</a>
+                    <label>Github: </label><a target="_blank" :href="url_github">{{ url_github }}</a>
                 </p>
                 <!-- <p>
                     <label>Gitee: </label><a _target="blank" :href="url_gitee">{{ url_gitee }}</a>
