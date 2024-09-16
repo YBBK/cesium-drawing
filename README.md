@@ -186,4 +186,14 @@ drawer?.drawPoint(options)
 
 > 如果您觉得这个项目帮助到了您，您可以请作者喝一杯咖啡表示鼓励
 
-<img src="./snapshot/wp.jpg" alt="微信收款码" width="200" height="250">
+<img src="./snapshot/wp.jpg" alt="微信收款码" width="200" >
+
+### 效果图
+
+![avatar](./snapshot/a1.png)
+![avatar](./snapshot/a2.png)
+![avatar](./snapshot/a3.png)
+![avatar](./snapshot/a4.png)
+![avatar](./snapshot/a5.png)
+![avatar](./snapshot/a6.png)
+![avatar](./snapshot/a7.png)
