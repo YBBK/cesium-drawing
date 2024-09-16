@@ -2,11 +2,12 @@
     <div ref="cesiumContainer" :id="props.id" class="mapviewer">
         <MapIndicator class="indicator" />
         <div class="r">
+            <div style="margin-right: 0.5rem;">
+                <slot name="action"></slot>
+            </div>
             <div class="act">
                 <MapDrawing ref="cesiumDrawing" class="drawing" :viewer="viewer" />
-                <div style="margin-top: -20rem">
-                    <slot name="action"></slot>
-                </div>
+
                 <MapZoom class="zoom" :home="props.home" @go-home="handleGoHome" />
             </div>
             <SideLayer v-if="$slots.sideLayer">

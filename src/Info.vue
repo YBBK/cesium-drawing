@@ -18,12 +18,7 @@
                 目前己开源,地址如下：
             </div>
             <div class="section">
-                <p>
-                    <label>Github: </label><a target="_blank" :href="url_github">{{ url_github }}</a>
-                </p>
-                <!-- <p>
-                    <label>Gitee: </label><a _target="blank" :href="url_gitee">{{ url_gitee }}</a>
-                </p> -->
+                <label>Github: </label><a target="_blank" :href="url_github">{{ url_github }}</a>
             </div>
             <div class="section last">
                 your's 郭师傅
@@ -45,7 +40,6 @@ defineProps({
 })
 
 const url_github = "https://github.com/YBBK/cesium-drawing"
-const url_gitee = "http://www.baidu.com"
 
 const onClose = () => {
     emits('close')
@@ -55,10 +49,11 @@ const onClose = () => {
 .info-box {
     position: absolute;
     width: 500px;
+    max-width: 500px;
     height: 320px;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -100%);
+    transform: translate(-50%, -50%);
     z-index: 9;
 
     .section {
@@ -74,6 +69,13 @@ const onClose = () => {
         &.last {
             text-align: end;
         }
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .info-box {
+        width: 80%;
+        height: auto;
     }
 }
 </style>

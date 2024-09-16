@@ -187,6 +187,10 @@ drawer?.drawPoint(options)
   <a href="./snapshot/a4.webp" target="_blank"><img src="./snapshot/a4.webp" alt="图片2" width="45%" /></a>
 </p>
 
+### Cesium交流群
+
+> 点击链接加入群聊【Cesium开发者杂谈】：[![加入QQ群](https://img.shields.io/badge/-26137437-green)](https://qm.qq.com/q/S9UlNce7Oq)
+
 ### 捐赠
 
 > 如果您觉得这个项目帮助到了您，您可以请作者喝一杯咖啡表示鼓励

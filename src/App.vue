@@ -13,6 +13,9 @@
                     </ButtonGroup>
                 </template>
                 <ul class="layer-list">
+                    <div class="empty" v-if="Object.keys(store.shapes).length === 0">
+                        目前没有任何图形
+                    </div>
                     <li v-for="(shapes, type) in store.shapes" :key="type">
                         <div class="item">
                             <Icon icon="caret" :class="{ open: isGroupOpen(type) }" @click="handleToggleGroup(type)" />
@@ -218,7 +221,7 @@ const copyToClipboard = async () => {
 
 const isShowHelp = ref(true)
 const showHelp = () => {
-    isShowHelp.value = true;
+    isShowHelp.value = !isShowHelp.value;
 }
 watch(
     () => geoJSON.value,
@@ -243,6 +246,11 @@ watch(
         padding: 0;
         list-style: none;
         margin-top: -4px;
+
+        .empty {
+            padding: 2rem;
+            text-align: center;
+        }
 
         .item {
             display: flex;
