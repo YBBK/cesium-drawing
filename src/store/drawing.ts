@@ -9,7 +9,7 @@ export const useDrawingStore = defineStore('drawing', {
       if (!this.shapes[type]) {
         this.shapes[type] = []
       }
-      const index = this.shapes[type].findIndex((s) => s.id === id)
+      const index = this.shapes[type].findIndex((s) => s.id === shape.id)
       if (index !== -1) {
         this.updateShape(type, shape.id, shape)
       } else {

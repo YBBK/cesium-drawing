@@ -69,7 +69,6 @@ export interface GraphicOptions {
   clampToGround: boolean
   showLabel: boolean
   labelFont: string
-  zoneType?: string
 }
 
 export enum GraphicMode {

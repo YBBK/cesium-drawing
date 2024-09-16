@@ -30,15 +30,6 @@ function flyToPoint(viewer: Cesium.Viewer, coordinate: number[]) {
   })
 }
 
-function flyToEntity(viewer: Cesium.Viewer, id: string) {
-  const entity = viewer.entities.getById(id)
-  if (entity) {
-    viewer.flyTo(entity, {
-      offset: new Cesium.HeadingPitchRange(0, -Cesium.Math.PI_OVER_TWO, 0)
-    })
-  }
-}
-
 function getHeight(height: number): number {
   if (height && height > MIN_HEIGHT) {
     return height
@@ -50,6 +41,5 @@ function getHeight(height: number): number {
 export default {
   zoomTo,
   setView,
-  flyToPoint,
-  flyToEntity
+  flyToPoint
 }
