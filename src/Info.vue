@@ -21,9 +21,9 @@
                 <p>
                     <label>Github: </label><a _target="blank" :href="url_github">{{ url_github }}</a>
                 </p>
-                <p>
+                <!-- <p>
                     <label>Gitee: </label><a _target="blank" :href="url_gitee">{{ url_gitee }}</a>
-                </p>
+                </p> -->
             </div>
             <div class="section last">
                 your's 郭师傅
@@ -44,7 +44,7 @@ defineProps({
     }
 })
 
-const url_github = "http://www.google.com"
+const url_github = "https://github.com/YBBK/cesium-drawing"
 const url_gitee = "http://www.baidu.com"
 
 const onClose = () => {
