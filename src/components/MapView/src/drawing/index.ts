@@ -1,3 +1,3 @@
-import MapDrawing from './MapDrawing.vue';
+import MapDrawing from './MapDrawing.vue'
 
-export { MapDrawing };
+export { MapDrawing }
