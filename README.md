@@ -172,14 +172,19 @@ drawer?.drawPoint(options)
 ### 效果图
 
 <p style="100%">
-  <a href="./snapshot/a7.png" target="_blank"><img src="./snapshot/a7.png" alt="图片1" width="30%" /></a>
-  <a href="./snapshot/a1.png" target="_blank"><img src="./snapshot/a1.png" alt="图片2" width="30%" /></a>
-  <a href="./snapshot/a2.png" target="_blank"><img src="./snapshot/a2.png" alt="图片3" width="30%" /></a>
+  <a href="./snapshot/a7.webp" target="_blank"><img src="./snapshot/a7.webp" alt="图片1" width="45%" /></a>
+  <a href="./snapshot/a1.webp" target="_blank"><img src="./snapshot/a1.webp" alt="图片2" width="45%" /></a>
+</p> 
+<p style="100%">
+  <a href="./snapshot/a2.webp" target="_blank"><img src="./snapshot/a2.webp" alt="图片3" width="45%" /></a>
+  <a href="./snapshot/a3.webp" target="_blank"><img src="./snapshot/a3.webp" alt="图片1" width="45%" /></a>
 </p>
 <p style="100%">
-  <a href="./snapshot/a3.png" target="_blank"><img src="./snapshot/a3.png" alt="图片1" width="30%" /></a>
-  <a href="./snapshot/a5.png" target="_blank"><img src="./snapshot/a5.png" alt="图片2" width="30%" /></a>
-  <a href="./snapshot/a6.png" target="_blank"><img src="./snapshot/a6.png" alt="图片3" width="30%" /></a>
+  <a href="./snapshot/a5.webp" target="_blank"><img src="./snapshot/a5.webp" alt="图片2" width="45%" /></a>
+  <a href="./snapshot/a6.webp" target="_blank"><img src="./snapshot/a6.webp" alt="图片3" width="45%" /></a>
+</p>
+<p style="100%">
+  <a href="./snapshot/a4.webp" target="_blank"><img src="./snapshot/a4.webp" alt="图片2" width="45%" /></a>
 </p>
 
 ### 捐赠
@@ -187,13 +192,3 @@ drawer?.drawPoint(options)
 > 如果您觉得这个项目帮助到了您，您可以请作者喝一杯咖啡表示鼓励
 
 <img src="./snapshot/wp.jpg" alt="微信收款码" width="200" >
-
-### 效果图
-
-![avatar](./snapshot/a1.png)
-![avatar](./snapshot/a2.png)
-![avatar](./snapshot/a3.png)
-![avatar](./snapshot/a4.png)
-![avatar](./snapshot/a5.png)
-![avatar](./snapshot/a6.png)
-![avatar](./snapshot/a7.png)
