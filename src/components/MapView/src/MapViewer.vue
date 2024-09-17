@@ -96,12 +96,25 @@ onMounted(async () => {
         fullscreenButton: false,
         navigationHelpButton: false,
         shouldAnimate: true,
-        targetFrameRate: 60
+        targetFrameRate: 60,
+
+
         // terrain: props.scene2DOnly ? undefined : Cesium.Terrain.fromWorldTerrain({ requestVertexNormals: true }),
+        terrain: new Cesium.Terrain(Cesium.CesiumTerrainProvider.fromUrl("http://120.26.202.82:8083/"))
     })
+    // var terrainProvider = new Cesium.CesiumTerrainProvider({
+    //     url: 'http://120.26.202.82:8083/',
+    //     requestVertexNormals: true,
+    //     requestWaterMask: true,
+    //     tilingScheme: new Cesium.GeographicTilingScheme(),
+    //     requestVertexNormals: true
+
+    // })
+    // _viewer.terrainProvider = terrainProvider;
     if (props.scene2DOnly) {
         _viewer.scene.mode = Cesium.SceneMode.SCENE2D;
     }
+    _viewer.scene.globe.terrainExaggeration = 8.0;
 
     _viewer._cesiumWidget._creditContainer.style.display = 'none'; // 隐藏cesium ion
     _viewer.scene.fxaa = true; //抗锯齿

@@ -13,7 +13,7 @@ const defaultGraphicOptions: GraphicOptions = {
   color: Cesium.Color.fromCssColorString('#3EDF2E'),
 
   //仅适用于点
-  pixelSize: 5,
+  pixelSize: 8,
   outlineColor: Cesium.Color.WHITE,
   outlineWidth: 1.5,
 
@@ -214,7 +214,8 @@ abstract class DrawableGraphic extends BaseGraphic {
         outlineWidth: 5,
         style: Cesium.LabelStyle.FILL_AND_OUTLINE,
         verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
-        pixelOffset: this.labelOffset()
+        pixelOffset: this.labelOffset(),
+        heightReference: this._options.heightReference
       }
     } else {
       return void 0
@@ -301,7 +302,7 @@ abstract class DrawableGraphic extends BaseGraphic {
   protected createNodes() {
     this._positions.forEach((position, index) => {
       const size =
-        this._selectedNodeIndex == index ? this._options.pixelSize * 1.5 : this._options.pixelSize
+        this._selectedNodeIndex == index ? this._options.pixelSize * 1.2 : this._options.pixelSize
       const node = this._viewer.entities.add({
         position: position,
         point: {
@@ -312,6 +313,7 @@ abstract class DrawableGraphic extends BaseGraphic {
               : this._options.editColor,
           outlineColor: this._options.outlineColor,
           outlineWidth: this._options.outlineWidth,
+          heightReference: this._options.heightReference,
           disableDepthTestDistance: Number.POSITIVE_INFINITY
         },
         properties: {
@@ -340,6 +342,7 @@ abstract class DrawableGraphic extends BaseGraphic {
             point: {
               pixelSize: this._options.pixelSize,
               color: this._options.editColor,
+              heightReference: this._options.heightReference,
               disableDepthTestDistance: Number.POSITIVE_INFINITY
             },
             properties: {
@@ -463,9 +466,10 @@ class PointGraphic extends DrawableGraphic {
           width: 36,
           height: 36,
           color: this._options.color,
-          //   translucencyByDistance: scale,
           verticalOrigin: Cesium.VerticalOrigin.CENTER,
           pixelOffset: new Cesium.Cartesian2(0, -18),
+          heightReference: this._options.heightReference,
+          disableDepthTestDistance: Number.POSITIVE_INFINITY,
           show: false
         },
         point: {
@@ -473,7 +477,8 @@ class PointGraphic extends DrawableGraphic {
           color: this._options.editColor,
           outlineColor: this._options.outlineColor,
           outlineWidth: this._options.outlineWidth,
-          disableDepthTestDistance: Number.POSITIVE_INFINITY
+          disableDepthTestDistance: Number.POSITIVE_INFINITY,
+          heightReference: this._options.heightReference
         },
         properties: {
           type: NodeType.Node,

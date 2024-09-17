@@ -35,14 +35,14 @@ class Drawer {
 
   private _listener: DrawableGraphicListener[] = []
   private _model: boolean = false
-  private _terrian: boolean = false
+  private _terrian: boolean = true
   private _name: string | undefined = ''
   private _nextId: number = 0
 
   constructor(viewer: Cesium.Viewer, options: DrawerOptions = {}) {
     this._viewer = viewer
     this._model = options.model || false
-    this._terrian = options.terrian || false
+    this._terrian = options.terrian || true
     this._name = options.name
     this._handler = viewer.screenSpaceEventHandler
     this._normalMode = options.mode || DrawerMode.IDLE
