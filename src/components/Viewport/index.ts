@@ -1,4 +1,4 @@
-import SideLayer from './src/SideLayer.vue'
-import Panel from './src/Panel.vue'
+import SideLayer from './src/SideLayer.vue';
+import Panel from './src/Panel.vue';
 
-export { SideLayer, Panel }
+export { SideLayer, Panel };
