@@ -330,7 +330,7 @@ abstract class DrawableGraphic extends BaseGraphic {
                             pixelSize: this._options.pixelSize,
                             color: this._options.editColor,
                             heightReference: this._options.heightReference,
-                            disableDepthTestDistance: Number.POSITIVE_INFINITY,
+                            // disableDepthTestDistance: Number.POSITIVE_INFINITY,
                         },
                         properties: {
                             type: NodeType.ControlNode,
@@ -456,7 +456,7 @@ class PointGraphic extends DrawableGraphic {
                     verticalOrigin: Cesium.VerticalOrigin.CENTER,
                     pixelOffset: new Cesium.Cartesian2(0, -18),
                     // heightReference: this._options.heightReference,
-                    disableDepthTestDistance: Number.POSITIVE_INFINITY,
+                    // disableDepthTestDistance: Number.POSITIVE_INFINITY,
                     show: false,
                 },
                 point: {
@@ -465,7 +465,7 @@ class PointGraphic extends DrawableGraphic {
                     outlineColor: this._options.outlineColor,
                     outlineWidth: this._options.outlineWidth,
                     // heightReference: this._options.heightReference,
-                    disableDepthTestDistance: Number.POSITIVE_INFINITY,
+                    // disableDepthTestDistance: Number.POSITIVE_INFINITY,
                 },
                 properties: {
                     type: NodeType.Node,
@@ -544,7 +544,7 @@ class LineGraphic extends DrawableGraphic {
         name: string,
         positions: Cesium.Cartesian3[],
         options: Partial<GraphicOptions>,
-        updateCallback: (arg: BaseGraphic) => void,
+        updateCallback: (arg: DrawableGraphic) => void,
     ) {
         super(viewer, id, name, positions, options, updateCallback);
     }

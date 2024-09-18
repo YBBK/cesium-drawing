@@ -5,6 +5,7 @@ import { DrawableGraphic, PointGraphic, LineGraphic, PolygonGraphic, RectangleGr
 import { DrawerMode, GraphicType, NodeType } from './types';
 import type { GraphicOptions, DrawerOptions, DrawableGraphicListener } from './types';
 import { getNodeProp, pickCartesian3 as pickPosition } from './utils';
+import { formatToDateTime } from '@/utils/dateUtil';
 
 class Drawer {
     private static readonly DOUBLE_CLICK_DELAY = 300; // 毫秒
@@ -29,14 +30,12 @@ class Drawer {
     private _listener: DrawableGraphicListener[] = [];
     private _model: boolean = false;
     private _terrian: boolean = true;
-    private _name: string | undefined = '';
-    private _nextId: number = 0;
+    private _name: string | undefined;
 
     constructor(viewer: Cesium.Viewer, options: DrawerOptions = {}) {
         this._viewer = viewer;
         this._model = options.model || false;
         this._terrian = options.terrian || true;
-        this._name = options.name;
         this._handler = viewer.screenSpaceEventHandler;
         this._normalMode = options.mode || DrawerMode.IDLE;
         this._boundHandleKeyDown = this.handleKeyDown.bind(this);
@@ -100,11 +99,10 @@ class Drawer {
         return uuidv4();
     }
 
-    private generateName(type: GraphicType | undefined, name: string | undefined = undefined): string {
-        if (name && name.length > 0) {
-            return name;
-        }
-        return type ? type.toLowerCase() + ' ' + this._nextId : '' + this._nextId;
+    private generateName(type: GraphicType | string, name?: string): string {
+        const _key = name || type.toLowerCase();
+        const _id = formatToDateTime();
+        return `${_key} ${_id}`;
     }
 
     // 启用绘图相关的事件监听器
@@ -303,6 +301,10 @@ class Drawer {
 
     // 开始绘图
     private startDrawing(pos: Cesium.Cartesian3) {
+        if (!this._type) {
+            this.cancelDrawing();
+            return;
+        }
         const id = this.generateUniqueId();
         const name = this.generateName(this._type, this._name);
         switch (this._type) {
@@ -405,7 +407,6 @@ class Drawer {
             }
         }
         this._graphics.set(graphic.id, graphic);
-        this._nextId++;
 
         if (isNotify) {
             this.notifyGraphicAdded(graphic);
@@ -445,41 +446,34 @@ class Drawer {
 
     // 绘制点
     drawPoint(options: Partial<GraphicOptions> = {}) {
-        this.cancelDrawing();
-        this._options = this.convertColorProperties(options);
-        this._type = GraphicType.Point;
-        this.setMode(DrawerMode.DRAWING);
+        this.drawGraphic(GraphicType.Point, options);
     }
 
     // 绘制线
     drawLine(options: Partial<GraphicOptions> = {}) {
-        this.cancelDrawing();
-        this._options = this.convertColorProperties(options);
-        this._type = GraphicType.PolyLine;
-        this.setMode(DrawerMode.DRAWING);
+        this.drawGraphic(GraphicType.PolyLine, options);
     }
 
     // 绘制多边形
     drawPolygon(options: Partial<GraphicOptions> = {}) {
-        this.cancelDrawing();
-        this._options = this.convertColorProperties(options);
-        this._type = GraphicType.Polygon;
-        this.setMode(DrawerMode.DRAWING);
+        this.drawGraphic(GraphicType.Polygon, options);
     }
 
     // 绘制圆形
     drawCircle(options: Partial<GraphicOptions> = {}) {
-        this.cancelDrawing();
-        this._options = this.convertColorProperties(options);
-        this._type = GraphicType.Circle;
-        this.setMode(DrawerMode.DRAWING);
+        this.drawGraphic(GraphicType.Circle, options);
     }
 
     // 绘制矩形
     drawRectangle(options: Partial<GraphicOptions> = {}) {
+        this.drawGraphic(GraphicType.Rectangle, options);
+    }
+
+    private drawGraphic(type: GraphicType, options: Partial<GraphicOptions> = {}) {
         this.cancelDrawing();
         this._options = this.convertColorProperties(options);
-        this._type = GraphicType.Rectangle;
+        this._type = type;
+        this._name = options.name;
         this.setMode(DrawerMode.DRAWING);
     }
 
@@ -519,14 +513,14 @@ class Drawer {
         }
     }
 
-    updateProperties(id: string, properties: Object, isNotify: boolean = true) {
+    updateProperties(id: string, properties: any, isNotify: boolean = true) {
         const graphic = this.getGraphicById(id);
         if (graphic) {
-            if (properties.hasOwnProperty('name')) {
-                graphic.setName((properties as any).name);
+            if (properties.name) {
+                graphic.setName(properties.name);
             }
-            if (properties.hasOwnProperty('position')) {
-                const position = (properties as any).position;
+            if (properties.position) {
+                const position = properties.position;
                 const pos = Cesium.Cartesian3.fromDegrees(position[0], position[1], position[2] || 0);
                 graphic.updateNodePosition(0, pos);
             }
@@ -622,7 +616,7 @@ class Drawer {
         const _options = this.convertColorProperties(feature.properties);
 
         let graphic: DrawableGraphic | null = null;
-        const name = feature.name || feature.properties.name || 'imp_' + this._nextId;
+        const name = feature.name || feature.properties.name || this.generateName(feature.geometry.type);
 
         switch (feature.geometry.type) {
             case 'Point':

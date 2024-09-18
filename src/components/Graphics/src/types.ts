@@ -56,11 +56,11 @@ export enum NodeType {
 export interface GraphicOptions {
     pixelSize: number;
     heightReference?: Cesium.HeightReference;
-    color: Cesium.Color;
-    outlineColor: Cesium.Color;
+    color: Cesium.Color | string;
+    outlineColor: Cesium.Color | string;
     outlineWidth: number;
-    selectedColor: Cesium.Color;
-    editColor: Cesium.Color;
+    selectedColor: Cesium.Color | string;
+    editColor: Cesium.Color | string;
     width: number;
     opacity: number;
     dash: boolean;
