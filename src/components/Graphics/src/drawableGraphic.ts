@@ -455,7 +455,7 @@ class PointGraphic extends DrawableGraphic {
                     color: this._options.color,
                     verticalOrigin: Cesium.VerticalOrigin.CENTER,
                     pixelOffset: new Cesium.Cartesian2(0, -18),
-                    heightReference: this._options.heightReference,
+                    // heightReference: this._options.heightReference,
                     disableDepthTestDistance: Number.POSITIVE_INFINITY,
                     show: false,
                 },
@@ -464,8 +464,8 @@ class PointGraphic extends DrawableGraphic {
                     color: this._options.editColor,
                     outlineColor: this._options.outlineColor,
                     outlineWidth: this._options.outlineWidth,
+                    // heightReference: this._options.heightReference,
                     disableDepthTestDistance: Number.POSITIVE_INFINITY,
-                    heightReference: this._options.heightReference,
                 },
                 properties: {
                     type: NodeType.Node,
