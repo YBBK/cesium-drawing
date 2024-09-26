@@ -30,15 +30,19 @@
                                 <Icon icon="rect" v-else-if="type == 'Rectangle'" />
                                 <Icon icon="point" v-else />
 
-                                <div class="name" @dblclick="handleEditName(shape.id)" v-if="!isEditing(shape.id)" title="双击修改">
+                                <div class="name" @dblclick="handleEditName(shape.id)" v-if="!isEditing(shape.id)"
+                                    title="双击修改">
                                     {{ shape.properties.name }}
                                 </div>
                                 <div v-else>
-                                    <input type="text" :id="'input_ele_' + shape.id" :value="shape.properties.name" @keydown.enter="handleEditNameCompleted($event, shape.id)" />
+                                    <input type="text" :id="'input_ele_' + shape.id" :value="shape.properties.name"
+                                        @keydown.enter="handleEditNameCompleted($event, shape.id)" />
                                 </div>
                                 <div class="action">
-                                    <IconButton :border="0" icon="edit" @click="handleEditName(shape.id)" v-if="!isEditing(shape.id)" />
-                                    <IconButton :border="0" icon="check" @click="handleEditNameSubmit(shape.id)" v-else />
+                                    <IconButton :border="0" icon="edit" @click="handleEditName(shape.id)"
+                                        v-if="!isEditing(shape.id)" />
+                                    <IconButton :border="0" icon="check" @click="handleEditNameSubmit(shape.id)"
+                                        v-else />
                                     <IconButton :border="0" icon="aim" @click="handleFlyTo(shape.id)" />
                                     <IconButton :border="0" icon="delete" @click="handleDelete(shape.id)" />
                                 </div>
@@ -76,6 +80,8 @@ import { Icon, IconButton, ButtonGroup } from '@/components/Icon';
 import { useDrawingStore } from '@/store/drawing';
 import { CodeEditor } from '@/components/CodeEditor';
 import InfoBox from './Info.vue';
+import { cloneDeep } from 'lodash';
+
 
 const ShapeNames = {
     Point: '点',
@@ -167,14 +173,12 @@ const handleClear = (type: string) => {
 
 const handleImport = () => {
     showImportOrExport.value = 1;
-    console.log(showImportOrExport.value);
 };
 
 const handleExport = () => {
     showImportOrExport.value = 2;
     const drawer = getDrawer();
     geoJSON.value = drawer?.exportToGeoJSONFeature();
-    console.log(showImportOrExport.value);
 };
 
 const onClose = () => {
@@ -182,11 +186,11 @@ const onClose = () => {
     geoJSON.value = undefined;
 };
 
-const importGeoJSON = async () => {
+const importGeoJSON = async (value: string) => {
     try {
-        if (geoJSON.value) {
+        if (value) {
             const drawer = getDrawer();
-            drawer?.importFromGeoJSON(geoJSON.value, true);
+            drawer?.importFromGeoJSON(value, true);
             message.value = { msg: 'GeoJSON was imported!', success: true };
             setTimeout(() => {
                 message.value = undefined;
@@ -225,7 +229,7 @@ watch(
     () => geoJSON.value,
     (newValue) => {
         if (showImportOrExport.value == 1 && newValue) {
-            importGeoJSON();
+            importGeoJSON(cloneDeep(newValue));
         }
     },
 );

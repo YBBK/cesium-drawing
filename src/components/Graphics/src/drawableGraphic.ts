@@ -3,7 +3,7 @@ import { BaseGraphic } from './base';
 import { GraphicType, NodeType, GraphicMode } from './types';
 import type { GraphicOptions } from './types';
 
-import { getNodeProp, toCssColorString, toLnglat } from './utils';
+import { getNodeProp, toCssColorString, toLnglat, createCircleSVG } from './utils';
 
 const MARKER_SVG =
     'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36"><path fill="white" d="M18 2A11.79 11.79 0 0 0 6.22 13.73c0 4.67 2.62 8.58 4.54 11.43l.35.52a100 100 0 0 0 6.14 8l.76.89l.76-.89a100 100 0 0 0 6.14-8l.35-.53c1.91-2.85 4.53-6.75 4.53-11.42A11.79 11.79 0 0 0 18 2m0 17a6.56 6.56 0 1 1 6.56-6.56A6.56 6.56 0 0 1 18 19" class="clr-i-solid clr-i-solid-path-1"/><circle cx="18" cy="12.44" r="3.73" fill="white" class="clr-i-solid clr-i-solid-path-2"/><path fill="none" d="M0 0h36v36H0z"/></svg>';
@@ -297,17 +297,20 @@ abstract class DrawableGraphic extends BaseGraphic {
     }
 
     protected createNodes() {
+        const svg = createCircleSVG(toCssColorString(this._options.editColor as Cesium.Color), '#ffffff');
+        const ctlSvg = createCircleSVG(toCssColorString(this._options.editColor as Cesium.Color));
+        const selectedSvg = createCircleSVG(toCssColorString(this._options.selectedColor as Cesium.Color));
         this._positions.forEach((position, index) => {
-            const size = this._selectedNodeIndex == index ? this._options.pixelSize * 1.2 : this._options.pixelSize;
+            //顶点
+            const size = this._selectedNodeIndex == index ? this._options.pixelSize * 1.8 : this._options.pixelSize * 1.5;
             const node = this._viewer.entities.add({
                 position: position,
-                point: {
-                    pixelSize: size,
-                    color: this._selectedNodeIndex == index ? this._options.selectedColor : this._options.editColor,
-                    outlineColor: this._options.outlineColor,
-                    outlineWidth: this._options.outlineWidth,
-                    heightReference: this._options.heightReference,
-                    disableDepthTestDistance: Number.POSITIVE_INFINITY,
+                billboard: {
+                    image: this._selectedNodeIndex == index ? selectedSvg : svg,
+                    width: size,
+                    height: size,
+                    heightReference: Cesium.HeightReference.CLAMP_TO_GROUND,
+                    disableDepthTestDistance: Number.POSITIVE_INFINITY, // 禁用深度测试
                 },
                 properties: {
                     type: NodeType.Node,
@@ -319,27 +322,29 @@ abstract class DrawableGraphic extends BaseGraphic {
 
             if (this.isAllowControlPoint()) {
                 // 添加控制点 如果是多边形，在最后一个点跟首节点中间添加控制点
-                const last = this.type() == GraphicType.Polygon ? this._positions.length : this._positions.length - 1;
-                if (index < last) {
-                    const nextPosition = index < this._positions.length - 1 ? this._positions[index + 1] : this._positions[0];
-                    const midPosition = Cesium.Cartesian3.midpoint(position, nextPosition, new Cesium.Cartesian3());
-                    const controlPoint = this._viewer.entities.add({
-                        position: midPosition,
-                        show: this._mode === GraphicMode.Edit ? true : false,
-                        point: {
-                            pixelSize: this._options.pixelSize,
-                            color: this._options.editColor,
-                            heightReference: this._options.heightReference,
-                            // disableDepthTestDistance: Number.POSITIVE_INFINITY,
-                        },
-                        properties: {
-                            type: NodeType.ControlNode,
-                            index: index,
-                            graphic: this,
-                        },
-                    });
-                    this._controlPoints.push(controlPoint);
+                // const last = this._positions.length;
+                if (index >= this.positions.length - 1 && this.type() !== GraphicType.Polygon) {
+                    return;
                 }
+                const nextPosition = this._positions[index + 1] || this._positions[0];
+                const midPosition = Cesium.Cartesian3.midpoint(position, nextPosition, new Cesium.Cartesian3());
+                const controlPoint = this._viewer.entities.add({
+                    position: midPosition,
+                    show: this._mode === GraphicMode.Edit ? true : false,
+                    billboard: {
+                        image: ctlSvg,
+                        width: this._options.pixelSize,
+                        height: this._options.pixelSize,
+                        heightReference: Cesium.HeightReference.CLAMP_TO_GROUND,
+                        disableDepthTestDistance: Number.POSITIVE_INFINITY, // 禁用深度测试
+                    },
+                    properties: {
+                        type: NodeType.ControlNode,
+                        index: index,
+                        graphic: this,
+                    },
+                });
+                this._controlPoints.push(controlPoint);
             }
         });
     }
@@ -383,9 +388,8 @@ abstract class DrawableGraphic extends BaseGraphic {
     properties() {
         return {
             name: this._name,
-            color: toCssColorString(this._options.color),
+            color: toCssColorString(this._options.color as Cesium.Color),
             opacity: this._options.opacity,
-            clampToGround: this._options.clampToGround,
         };
     }
 
@@ -443,30 +447,35 @@ class PointGraphic extends DrawableGraphic {
         return this.isMultiPoint() ? GraphicType.MultiPoint : GraphicType.Point;
     }
 
+    private getNormalBillboard(): any {
+        return {
+            image: MARKER_SVG,
+            width: 36,
+            height: 36,
+            color: this._options.color,
+            verticalOrigin: Cesium.VerticalOrigin.CENTER,
+            pixelOffset: new Cesium.Cartesian2(0, -18),
+            heightReference: Cesium.HeightReference.CLAMP_TO_GROUND,
+            disableDepthTestDistance: Number.POSITIVE_INFINITY,
+        };
+    }
+    private getBillboard(color: Cesium.Color | string, size: number = this._options.pixelSize * 2): any {
+        return {
+            image: createCircleSVG(toCssColorString(color as Cesium.Color)),
+            width: size,
+            height: size,
+            verticalOrigin: Cesium.VerticalOrigin.CENTER,
+            heightReference: Cesium.HeightReference.CLAMP_TO_GROUND,
+            disableDepthTestDistance: Number.POSITIVE_INFINITY,
+        };
+    }
+
     protected override createEntities(): Cesium.Entity[] {
         const entities: Cesium.Entity[] = [];
         this._positions.forEach((pos, idx) => {
             const entity = new Cesium.Entity({
                 position: pos,
-                billboard: {
-                    image: MARKER_SVG,
-                    width: 36,
-                    height: 36,
-                    color: this._options.color,
-                    verticalOrigin: Cesium.VerticalOrigin.CENTER,
-                    pixelOffset: new Cesium.Cartesian2(0, -18),
-                    // heightReference: this._options.heightReference,
-                    // disableDepthTestDistance: Number.POSITIVE_INFINITY,
-                    show: false,
-                },
-                point: {
-                    pixelSize: this._options.pixelSize * 1.5,
-                    color: this._options.editColor,
-                    outlineColor: this._options.outlineColor,
-                    outlineWidth: this._options.outlineWidth,
-                    // heightReference: this._options.heightReference,
-                    // disableDepthTestDistance: Number.POSITIVE_INFINITY,
-                },
+                billboard: this.getNormalBillboard(),
                 properties: {
                     type: NodeType.Node,
                     index: idx,
@@ -479,37 +488,23 @@ class PointGraphic extends DrawableGraphic {
     }
 
     protected updateStyle() {
+        const editBillboard = this.getBillboard(this._options.editColor);
+        const selectedBillboard = this.getBillboard(this._options.selectedColor);
+        const normalBillboard = this.getNormalBillboard();
+
         this._entities.forEach((entity, idx) => {
+            entity.position = this._positions[idx];
             switch (this._mode) {
                 case GraphicMode.Normal:
-                    entity.position = this._positions[idx];
-                    if (entity.billboard) {
-                        entity.billboard.color = this._options.color;
-                        entity.billboard.show = true;
-                    }
-                    if (entity.point) {
-                        entity.point.show = false;
-                    }
+                    entity.billboard = normalBillboard;
                     this.updateLabel();
                     break;
                 case GraphicMode.Selected:
-                    if (entity.billboard) {
-                        entity.billboard.show = false;
-                    }
-                    if (entity.point) {
-                        entity.point.show = true;
-                        entity.point.color = this._options.selectedColor;
-                    }
+                    entity.billboard = selectedBillboard;
                     this.updateLabel(false);
                     break;
                 case GraphicMode.Edit:
-                    if (entity.billboard) {
-                        entity.billboard.show = false;
-                    }
-                    if (entity.point) {
-                        entity.point.show = true;
-                        entity.point.color = this._options.editColor;
-                    }
+                    entity.billboard = editBillboard;
                     this.updateLabel(false);
                     break;
             }
@@ -911,6 +906,7 @@ class CircleGraphic extends RectangleGraphic {
         return Object.assign(super.properties(), {
             type: 'Circle',
             radius: this._radius,
+            center: toLnglat(this.getCenter()),
         });
     }
     override type(): GraphicType {

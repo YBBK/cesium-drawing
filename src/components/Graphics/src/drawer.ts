@@ -594,6 +594,7 @@ class Drawer {
 
     // 从GeoJSON导入图形
     importFromGeoJSON(geojson: GeoJSON.FeatureCollection | GeoJSON.Feature, isNotify: boolean = false) {
+        console.log('importFromGeoJSON  ', geojson);
         if (geojson.type === 'FeatureCollection') {
             geojson.features.forEach((feature) => this.createGraphicFromFeature(feature, isNotify));
         } else if (geojson.type === 'Feature') {
@@ -632,7 +633,7 @@ class Drawer {
                 graphic = new PolygonGraphic(this._viewer, id, name, coordinates, _options, this.notifyGraphicUpdated.bind(this));
                 break;
             case 'Circle':
-                const radius = feature.geometry.radius || feature.properties.radius;
+                const radius = feature.properties.radius;
                 if (radius) {
                     const _graphic = new CircleGraphic(this._viewer, id, name, coordinates, _options, this.notifyGraphicUpdated.bind(this));
                     _graphic.radius = radius;
@@ -661,8 +662,11 @@ class Drawer {
                 coordinates = geometry.coordinates as number[][];
                 break;
             case 'MultiLineString':
+                coordinates = (geometry.coordinates as number[][][])[0];
+                break;
             case 'Polygon':
                 coordinates = (geometry.coordinates as number[][][])[0];
+                coordinates.pop();
                 break;
             case 'MultiPolygon':
                 coordinates = (geometry.coordinates as number[][][][])[0][0];

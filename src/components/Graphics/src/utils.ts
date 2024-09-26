@@ -59,6 +59,7 @@ export function getNodeProp(properties: Cesium.PropertyBag | undefined): NodePro
             type: properties.type?.getValue(),
             index: properties.index?.getValue(),
             graphic: properties.graphic?.getValue(),
+            graphicId: properties.graphicId?.getValue(),
         };
     }
     return void 0;
@@ -110,5 +111,28 @@ export function meters2Kilometers(meters) {
         return `${kilometers.toFixed(2)} km`;
     } else {
         return `${meters.toFixed(2)} m`;
+    }
+}
+
+const svgCache = new Map();
+export function createCircleSVG(color = '#ffffff', borderColor = color) {
+    const cacheKey = `${color}-${borderColor}`;
+    if (svgCache.has(cacheKey)) {
+        return svgCache.get(cacheKey);
+    }
+    const svgString = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+            <circle cx="32" cy="32" r="32" fill="${borderColor}"/>
+            <circle cx="32" cy="32" r="24" fill="${color}"/>
+        </svg>
+    `;
+
+    try {
+        const dataUrl = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svgString)));
+        svgCache.set(cacheKey, dataUrl);
+        return dataUrl;
+    } catch (error) {
+        console.error('Error creating SVG:', error);
+        return '';
     }
 }

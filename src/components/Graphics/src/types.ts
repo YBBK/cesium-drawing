@@ -11,7 +11,6 @@ export enum DrawerMode {
 export interface DrawerOptions {
     model?: boolean;
     terrian?: boolean;
-    name?: string;
     mode?: DrawerMode;
 }
 
@@ -41,6 +40,7 @@ export interface NodeProperties {
     type: NodeType;
     index: number;
     graphic: BaseGraphic;
+    graphicId?: string;
 }
 
 export enum NodeType {
@@ -69,20 +69,11 @@ export interface GraphicOptions {
     clampToGround: boolean;
     showLabel: boolean;
     labelFont: string;
+    name?: string;
 }
 
 export enum GraphicMode {
     Normal,
     Selected,
     Edit,
-}
-
-export interface GraphicPrimitive {
-    id: string;
-    name: string;
-    color: string;
-    opacity: number;
-    clampToGround: boolean;
-    type: string;
-    coordinates: any;
 }

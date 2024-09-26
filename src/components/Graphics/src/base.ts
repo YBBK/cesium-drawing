@@ -18,7 +18,7 @@ export abstract class BaseGraphic {
         return this._name;
     }
 
-    protected abstract createEntities(): Cesium.Entity[];
+    protected abstract createEntities(): Cesium.Entity[] | any[];
 
     show(): void {
         this.remove();
