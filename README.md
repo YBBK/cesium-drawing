@@ -191,8 +191,3 @@ drawer?.drawPoint(options)
 
 > 点击链接加入群聊【Cesium开发者杂谈】：[![加入QQ群](https://img.shields.io/badge/-26137437-green)](https://qm.qq.com/q/S9UlNce7Oq)
 
-### 捐赠
-
-> 如果您觉得这个项目帮助到了您，您可以请作者喝一杯咖啡表示鼓励
-
-<img src="./snapshot/wp.jpg" alt="微信收款码" width="200" >
