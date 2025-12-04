@@ -37,9 +37,6 @@
 - 绘图相关代码: 位于src/components/Graphics
 - Cesium相关: 位于src/components/Mapview
 
-###  演示
-
-演示地址：http://120.26.202.82:8088/
 
 ### 安装
 
